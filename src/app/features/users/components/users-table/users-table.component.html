@@ -1,0 +1,105 @@
+<div
+  class="flex flex-col gap-2 mt-4 md:mt-8 md:flex-row md:items-center md:justify-between"
+>
+  <p-iconField iconPosition="left">
+    <p-inputIcon styleClass="pi pi-search" />
+    <input
+      (input)="handleSearchUser($event)"
+      type="text"
+      pInputText
+      placeholder="Buscar por nome ou CPF... "
+      class="w-full md:w-[300px]"
+    />
+  </p-iconField>
+
+  <p-button
+    label="Adicionar Cliente"
+    icon="pi pi-plus"
+    size="small"
+    (onClick)="handleOpenCreateUserModal()"
+    styleClass="w-full md:w-auto"
+  ></p-button>
+</div>
+<div
+  class="flex-1 rounded-lg border w-full overflow-auto mt-4 last:[&>td]:border-0"
+>
+  <p-table
+    [value]="users"
+    [tableStyle]="{ 'min-width': '50rem' }"
+    [paginator]="true"
+    [rows]="paginatorConfig.rows"
+    [rowsPerPageOptions]="[15, 25, 50]"
+    [totalRecords]="paginatorConfig.totalRecords"
+    [scrollable]="true"
+    scrollHeight="calc(100vh - 310px)"
+  >
+    <ng-template pTemplate="header">
+      <tr class="text-sm font-semibold">
+        <th>ID</th>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>CPF</th>
+        <th>Planos</th>
+        <th class="text-right">Ações</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-user>
+      <tr class="border">
+        <td>{{ user.userId }}</td>
+        <td class="text-zinc-400">{{ user.name }}</td>
+        <td class="text-zinc-400">{{ user.email }}</td>
+        <td class="text-zinc-400">{{ user.cpf }}</td>
+        <td>
+          <div class="flex gap-1 flex-wrap">
+            @for (plan of user.associatedPlans; track $index) { @if($index < 2)
+            {
+            <p-tag
+              [value]="plan.planName"
+              severity="info"
+              [rounded]="true"
+            ></p-tag>
+            } @if(user.associatedPlans.length > 2 && $index === 2){
+            <p-tag
+              [value]="'+' + (user.associatedPlans.length - 3)"
+              severity="info"
+              [rounded]="true"
+            ></p-tag>
+            } }
+          </div>
+        </td>
+        <td class="text-right">
+          <div class="flex justify-end gap-2">
+            <p-button
+              icon="pi pi-pencil"
+              [text]="true"
+              size="small"
+              (onClick)="handleOpenEditUserModal(user.userId)"
+            ></p-button>
+            <p-button
+              icon="pi pi-trash"
+              [text]="true"
+              size="small"
+              severity="danger"
+              (onClick)="handleDeleteUser(user.userId)"
+            ></p-button>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="7" class="text-center p-4">Nenhum usuário encontrado.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<app-create-user-modal
+  [(displayModal)]="createUserDisplayModal"
+></app-create-user-modal>
+@if (user) {
+<app-edit-user-modal
+  [(displayModal)]="editUserDisplayModal"
+  [user]="user"
+></app-edit-user-modal>
+}

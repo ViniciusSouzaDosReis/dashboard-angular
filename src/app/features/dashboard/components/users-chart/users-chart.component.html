@@ -1,0 +1,35 @@
+<div
+  class="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between"
+>
+  <div>
+    <span class="font-semibold">Clientes Cadastrados</span>
+    <p class="text-sm text-zinc-400 mt-1 min-h-5">
+      {{ getMonthLabel(selectedMonth) }}
+    </p>
+  </div>
+  <div class="flex items-start gap-2">
+    <p-dropdown
+      [options]="monthsOptions"
+      (onChange)="handleMonthChange()"
+      [(ngModel)]="selectedMonth"
+      [disabled]="isLoading || isLoadingChart"
+      dataKey="return"
+      optionLabel="label"
+      optionValue="value"
+      class="text-xs"
+      placeholder="Selecione o mês"
+    />
+  </div>
+</div>
+<div class="relative flex items-center justify-center h-full">
+  @if(isLoadingChart) {
+  <app-spin-loading-blur class="absolute w-full h-full z-[999]" />
+  }
+  <p-chart
+    class="w-full"
+    type="bar"
+    [data]="chartData"
+    [options]="chartOptions"
+    height="500px"
+  />
+</div>

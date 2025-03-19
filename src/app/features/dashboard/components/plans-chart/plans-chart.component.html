@@ -1,0 +1,63 @@
+<div
+  class="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between"
+>
+  <div>
+    <span class="font-semibold">Clientes por Planos</span>
+    <p class="text-sm text-zinc-400 mt-1">
+      {{ getMonthLabel(selectedMonth) }} • {{ selectedPlans.length }} planos
+      selecionados
+    </p>
+  </div>
+  <div class="flex items-start gap-2">
+    @if(!isLoading) {
+    <p-multiSelect
+      [options]="data"
+      [(ngModel)]="selectedPlans"
+      (onChange)="handlePlanChange()"
+      [disabled]="isLoading || isLoadingChart"
+      optionLabel="name"
+      class="text-xs w-auto min-w-0 [&_.p-multiselect-label]:hidden [&_.p-multiselect-trigger]:py-2"
+      filter="false"
+      dropdownIcon="pi pi-filter"
+    />
+    } @else {
+    <p-skeleton width="100px" height="32px"></p-skeleton>
+    }
+
+    <p-dropdown
+      [options]="monthsOptions"
+      [(ngModel)]="selectedMonth"
+      (onChange)="handleMonthChange()"
+      [disabled]="isLoading || isLoadingChart"
+      dataKey="return"
+      optionLabel="label"
+      optionValue="value"
+      class="text-xs"
+      placeholder="Selecione o mês"
+    />
+  </div>
+</div>
+<div class="relative flex items-center justify-center">
+  @if(isLoadingChart) {
+  <app-spin-loading-blur class="absolute w-full h-full z-[999]" />
+  }
+  <p-chart
+    type="pie"
+    [data]="chartData"
+    [options]="chartOptions"
+    height="300px"
+  />
+</div>
+
+<div class="space-y-4 mt-4">
+  @for (planOption of plansOptions; track $index) {
+  <div class="flex items-center gap-1">
+    <div
+      class="size-2 rounded-full"
+      [class]="'bg-[' + chartColors[planOption.id] + ']'"
+    ></div>
+    <div class="text-zinc-400 ml-2 w-full">{{ planOption.name }}</div>
+    <div>{{ getPercentage(planOption).toFixed(0) }}%</div>
+  </div>
+  }
+</div>

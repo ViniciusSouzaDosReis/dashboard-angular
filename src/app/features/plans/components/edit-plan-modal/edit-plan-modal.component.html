@@ -1,0 +1,100 @@
+<p-dialog
+  [(visible)]="displayModal"
+  (onHide)="onHide()"
+  [style]="{ width: '600px' }"
+  [header]="'Editar ' + plan.nome"
+  [modal]="true"
+  styleClass="p-fluid"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <form [formGroup]="editPlanForm" (ngSubmit)="onSubmit()">
+    <div class="p-4 space-y-4">
+      <div class="space-y-2">
+        <label for="name" class="block text-sm font-medium">Nome</label>
+        <input
+          id="name"
+          type="text"
+          pInputText
+          formControlName="name"
+          class="bg-zinc-800 border-zinc-700"
+          aria-describedby="username-help"
+          placeholder="Nome do Plano"
+        />
+        @if (editPlanForm.get('name')?.hasError('required') &&
+        editPlanForm.get('name')?.touched) {
+        <small class="text-rose-500" id="username-help">
+          O nome é obrigatório
+        </small>
+        }
+      </div>
+      <div class="space-y-2">
+        <label for="price" class="block text-sm font-medium">Preço</label>
+        <p-inputNumber
+          formControlName="price"
+          inputId="price"
+          mode="decimal"
+          locale="pt-BR"
+          styleClass="[&>input]:bg-zinc-800"
+          [minFractionDigits]="2"
+        />
+        @if (editPlanForm.get('price')?.hasError('required') &&
+        editPlanForm.get('price')?.touched) {
+        <small class="text-rose-500" id="price-help">
+          O preço é obrigatório
+        </small>
+        }
+      </div>
+      <div class="space-y-2">
+        <label for="dataAllowance" class="block text-sm font-medium">
+          Franquia de Dados
+        </label>
+        <p-inputNumber
+          formControlName="dataAllowance"
+          inputId="dataAllowance"
+          locale="pt-BR"
+          styleClass="[&>input]:bg-zinc-800"
+        />
+        @if (editPlanForm.get('dataAllowance')?.hasError('required') &&
+        editPlanForm.get('dataAllowance')?.touched) {
+        <small class="text-rose-500" id="dataAllowance-help">
+          A Franquia de Dados é obrigatório
+        </small>
+        }
+      </div>
+      <div class="space-y-2">
+        <label for="callMinutes" class="block text-sm font-medium">
+          Minutos de Ligação
+        </label>
+        <p-inputNumber
+          formControlName="callMinutes"
+          inputId="callMinutes"
+          locale="pt-BR"
+          styleClass="[&>input]:bg-zinc-800"
+        />
+        @if (editPlanForm.get('callMinutes')?.hasError('required') &&
+        editPlanForm.get('callMinutes')?.touched) {
+        <small class="text-rose-500" id="callMinutes-help">
+          A Quantidade de Minutos é obrigatório
+        </small>
+        }
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-2 p-4 pt-0">
+      <button
+        pButton
+        type="button"
+        label="Cancelar"
+        class="p-button-outlined"
+        (click)="onHide()"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        label="Salvar"
+        [disabled]="!editPlanForm.valid"
+      ></button>
+    </div>
+  </form>
+</p-dialog>

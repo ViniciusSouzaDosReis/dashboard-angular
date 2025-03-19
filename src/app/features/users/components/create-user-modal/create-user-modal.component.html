@@ -1,0 +1,104 @@
+<p-dialog
+  [(visible)]="displayModal"
+  (onHide)="onHide()"
+  [style]="{ width: '600px' }"
+  header="Adicionar Novo Cliente"
+  [modal]="true"
+  styleClass="p-fluid"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <form [formGroup]="newUserForm" (ngSubmit)="onSubmit()">
+    <div class="p-4 space-y-4">
+      <div class="space-y-2">
+        <label for="name" class="block text-sm font-medium">Nome</label>
+        <input
+          id="name"
+          type="text"
+          pInputText
+          formControlName="name"
+          class="bg-zinc-800 border-zinc-700"
+          aria-describedby="username-help"
+          placeholder="Nome do cliente"
+        />
+        @if (newUserForm.get('name')?.hasError('required') &&
+        newUserForm.get('name')?.touched) {
+        <small class="text-rose-500" id="username-help">
+          O nome é obrigatório
+        </small>
+        }
+      </div>
+      <div class="space-y-2">
+        <label for="email" class="block text-sm font-medium">Email</label>
+        <input
+          id="email"
+          type="email"
+          pInputText
+          formControlName="email"
+          class="bg-zinc-800 border-zinc-700"
+          placeholder="Email do cliente"
+        />
+        @if (newUserForm.get('email')?.hasError('required') &&
+        newUserForm.get('email')?.touched) {
+        <small class="text-rose-500" id="email-help">
+          O email é obrigatório
+        </small>
+        } @if (newUserForm.get('email')?.hasError('email') &&
+        newUserForm.get('email')?.touched) {
+        <small class="text-rose-500" id="email-help">
+          O email é inválido. Ex:
+          <span class="text-zinc-400"> email&#64;email.com </span>
+        </small>
+        }
+      </div>
+      <div class="space-y-2">
+        <label for="cpf" class="block text-sm font-medium">CPF</label>
+        <p-inputMask
+          mask="999.999.999-99"
+          id="cpf"
+          type="text"
+          formControlName="cpf"
+          class="[&>input]:bg-zinc-800"
+          placeholder="CPF do cliente"
+        />
+        @if (newUserForm.get('cpf')?.hasError('required') &&
+        newUserForm.get('cpf')?.touched) {
+        <small class="text-rose-500" id="cpf-help"> O CPF é obrigatório </small>
+        }
+      </div>
+      <div class="space-y-2">
+        <label for="phone" class="block text-sm font-medium">Telefone</label>
+        <p-inputMask
+          mask="(99) 99999-9999"
+          id="phone"
+          type="text"
+          formControlName="phone"
+          class="[&>input]:bg-zinc-800"
+          placeholder="Telefone do cliente"
+        />
+        @if (newUserForm.get('phone')?.hasError('required') &&
+        newUserForm.get('phone')?.touched) {
+        <small class="text-rose-500" id="phone-help">
+          O telefone é obrigatório
+        </small>
+        }
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-2 p-4 pt-0">
+      <button
+        pButton
+        type="button"
+        label="Cancelar"
+        class="p-button-outlined"
+        (click)="onHide()"
+      ></button>
+      <button
+        pButton
+        type="submit"
+        label="Salvar"
+        [disabled]="!newUserForm.valid"
+      ></button>
+    </div>
+  </form>
+</p-dialog>

@@ -1,0 +1,90 @@
+<p-dialog
+  [(visible)]="displayModal"
+  (onHide)="onHide()"
+  [style]="{ width: '600px' }"
+  header="Criar Associação"
+  [modal]="true"
+  styleClass="p-fluid"
+  [draggable]="false"
+  [resizable]="false"
+>
+  <ng-template pTemplate="header">
+    <div class="space-y-1.5">
+      <h3 class="text-xl font-semibold">Criar Associação</h3>
+      <p class="text-sm text-zinc-400">
+        O cliente ja esta associado a 4 planos
+      </p>
+    </div>
+  </ng-template>
+  <div class="border rounded p-3 space-y-1 mb-4">
+    <span class="font-semibold">Cliente Selecionado</span>
+    <div class="flex gap-4 items-center">
+      <div
+        class="size-8 rounded-full bg-gradient-to-r from-zinc-700 to-zinc-500"
+      ></div>
+      <div class="">
+        <p class="font-medium">{{ user.name }}</p>
+        <p class="text-xs text-zinc-400">{{ user.email }}</p>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p-iconField iconPosition="left">
+      <p-inputIcon styleClass="pi pi-search" />
+      <input
+        (input)="handleSearchUser($event)"
+        type="text"
+        pInputText
+        placeholder="Buscar plano..."
+        class="w-full"
+        aria-describedby="amount-user"
+      />
+    </p-iconField>
+    @if(plans){
+    <div class="flex justify-between items-center mt-2">
+      <small class="text-zinc-400" id="amount-user">
+        {{ plans.length }} planos encontrados
+      </small>
+      <small class="text-zinc-400" id="amount-user">
+        {{ selectedPlans.length }} planos selecionados
+      </small>
+    </div>
+    } @else {
+    <p-skeleton width="150px" height="16px" styleClass="mt-2"></p-skeleton>
+    }
+
+    <div class="mt-2">
+      <p-scroller
+        [items]="plans"
+        [itemSize]="60"
+        [style]="{ width: '100%', height: '200px' }"
+        styleClass="w-full"
+      >
+        <ng-template pTemplate="item" let-plan let-options="options">
+          <div
+            class="flex items-start justify-between rounded-md p-2 mb-2 cursor-pointer hover:bg-zinc-800/50"
+            [class]="isSelected(plan) ? 'bg-zinc-700 hover:bg-zinc-600/50' : ''"
+            (click)="selectPlan(plan)"
+          >
+            <div>
+              <p class="font-medium">{{ plan.name }}</p>
+              <p class="text-xs text-zinc-400">{{ plan.name }}</p>
+            </div>
+
+            @if(isAssociating(plan)){
+            <div class="text-xs px-3 border rounded-full">Associado</div>
+            }
+          </div>
+        </ng-template>
+      </p-scroller>
+
+      <button
+        pButton
+        type="button"
+        label="Associar"
+        (click)="onSubmit()"
+        [disabled]="selectedPlans.length === 0"
+      ></button>
+    </div>
+  </div>
+</p-dialog>

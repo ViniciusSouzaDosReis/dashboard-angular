@@ -1,0 +1,12 @@
+<a
+  [routerLink]="route"
+  [pTooltip]="title"
+  tooltipStyleClass="bg-red text-white"
+  routerLinkActive="active"
+  class="flex items-center justify-center p-3 rounded-md hover:bg-zinc-800 text-xs"
+  [ngClass]="{ 'bg-zinc-100 text-zinc-800 hover:bg-zinc-50': isActive }"
+  tooltipPosition="left"
+  tooltipStyleClass="text-xs"
+>
+  <i [class]="icon"></i>
+</a>

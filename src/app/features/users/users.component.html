@@ -1,0 +1,12 @@
+<div>
+  <p class="text-zinc-400">Clientes</p>
+  <h3 class="text-xl font-semibold">Gerenciamento de Clientes</h3>
+
+  <div>
+    @if(!isLoading && users) {
+    <app-users-table [data]="users"/>
+    } @else {
+    <p-skeleton height="100%" width="100%"></p-skeleton>
+    }
+  </div>
+</div>

@@ -1,0 +1,158 @@
+<div>
+  <div>
+    <p class="text-zinc-400">Associações</p>
+    <h1 class="text-4xl font-semibold">Associação de Planos e Clientes</h1>
+  </div>
+
+  <div class="flex flex-col gap-8 mt-4 lg:grid-cols-7 lg:grid overflow-hidden">
+    <div class="col-span-4">
+      <h3 class="text-xl font-semibold mb-2">Usuarios</h3>
+
+      <p-iconField iconPosition="left">
+        <p-inputIcon styleClass="pi pi-search" />
+        <input
+          (input)="handleSearchUser($event)"
+          type="text"
+          pInputText
+          placeholder="Buscar cliente..."
+          class="w-full"
+          aria-describedby="amount-user"
+        />
+      </p-iconField>
+      @if(users){
+      <small class="text-zinc-400" id="amount-user">
+        {{ users.length }} clientes encontrados
+      </small>
+      } @else {
+      <p-skeleton width="150px" height="16px" styleClass="mt-2"></p-skeleton>
+      }
+
+      <div class="flex justify-content-center mt-4">
+        <p-scroller
+          [items]="users"
+          [itemSize]="60"
+          [delay]="250"
+          [showLoader]="true"
+          [style]="{ width: '100%', height: '600px' }"
+          styleClass="w-full"
+          class="p-2 border rounded"
+        >
+          <ng-template pTemplate="item" let-user let-options="options">
+            <div
+              class="flex justify-between items-center border rounded p-2 bg-zinc-900 mb-2 cursor-grab"
+              pDraggable
+              (onDragStart)="dragStart(user)"
+              (onDragEnd)="dragEnd()"
+            >
+              <div class="flex gap-4 items-center">
+                <div
+                  class="size-8 rounded-full bg-gradient-to-r from-zinc-700 to-zinc-500"
+                ></div>
+                <div class="">
+                  <p class="font-medium">{{ user.name }}</p>
+                  <p class="text-xs text-zinc-400">{{ user.email }}</p>
+                </div>
+              </div>
+              <p-button
+                icon="pi pi-plus"
+                [text]="true"
+                size="small"
+                (onClick)="openCreateAssociationModal(user)"
+              ></p-button>
+            </div>
+          </ng-template>
+
+          <ng-template pTemplate="loader" let-options="options">
+            <p-skeleton width="100%" height="58px" styleClass="mb-2" />
+          </ng-template>
+        </p-scroller>
+      </div>
+    </div>
+
+    <div class="col-span-3">
+      <h3 class="text-xl font-semibold mb-2">Associações</h3>
+
+      <p-iconField iconPosition="left">
+        <p-inputIcon styleClass="pi pi-search" />
+        <input
+          (input)="handleSearchPlan($event)"
+          type="text"
+          pInputText
+          placeholder="Buscar planos..."
+          class="w-full"
+          aria-describedby="amount-user"
+        />
+      </p-iconField>
+      @if(plans){
+      <small class="text-zinc-400" id="amount-user">
+        {{ plans.length }} planos encontrados
+      </small>
+      } @else {
+      <p-skeleton width="150px" height="16px" styleClass="mt-2"></p-skeleton>
+      }
+
+      <div class="flex justify-content-center mt-4">
+        <p-scroller
+          [items]="plans"
+          [itemSize]="60"
+          [delay]="250"
+          [showLoader]="true"
+          [style]="{ width: '100%', height: '600px' }"
+          styleClass="w-full"
+          class="p-2 border rounded"
+        >
+          <ng-template pTemplate="list" let-plan>
+            <p-accordion pDroppable (onDrop)="drop(plan)">
+              <p-accordionTab
+                headerStyleClass="bg-zinc-950"
+                tabStyleClass="bg-zinc-950"
+                contentStyleClass="bg-zinc-950 p-2 pr-6 space-y-4"
+              >
+                <ng-template pTemplate="header">
+                  <div class="flex justify-between w-full pr-4">
+                    <div>{{ plan.name }}</div>
+                    <div
+                      class="flex items-center justify-center text-sm font-normal px-3 rounded-full bg-zinc-100 text-zinc-900 transition-all"
+                    >
+                      {{ plan.items.length }}
+                    </div>
+                  </div>
+                </ng-template>
+                @for (item of plan.items; track $index) {
+                <div
+                  class="flex justify-between p-2 bg-zinc-900 border rounded"
+                >
+                  <div class="flex items-center gap-2">
+                    <div
+                      class="size-5 rounded-full bg-gradient-to-r from-zinc-700 to-zinc-500"
+                    ></div>
+                    <div>
+                      {{ item.name }}
+                    </div>
+                  </div>
+
+                  <p-button
+                    icon="pi pi-times"
+                    [text]="true"
+                    size="small"
+                    (onClick)="removeItem(plan, item)"
+                  ></p-button>
+                </div>
+                }
+              </p-accordionTab>
+            </p-accordion>
+            <p-divider styleClass="my-2"></p-divider>
+          </ng-template>
+        </p-scroller>
+      </div>
+    </div>
+  </div>
+</div>
+@if(plans && selectedUser){
+<app-create-association-modal
+  [(displayModal)]="createAssociationDisplayModal"
+  [plans]="plans"
+  [user]="selectedUser"
+>
+</app-create-association-modal>
+}

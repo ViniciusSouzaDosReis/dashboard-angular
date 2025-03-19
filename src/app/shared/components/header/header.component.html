@@ -1,0 +1,59 @@
+<div
+  class="fixed px-4 py-2 border-b w-full z-[999] bg-zinc-950 sm:h-16 sm:flex sm:items-center"
+>
+  <p-dropdown
+    [options]="groupedTeams"
+    [(ngModel)]="selectedTeam"
+    [group]="true"
+    dropdownIcon="pi pi-code"
+    placeholder="Selecione um grupo"
+    class="text-xs [&_.p-dropdown-trigger-icon]:rotate-90 [&_.p-dropdown-trigger-icon]:text-xs sm:mb-0"
+  >
+    <ng-template pTemplate="selectedItem">
+      <div class="flex items-center gap-6" *ngIf="selectedTeam">
+        <div
+          class="size-5 rounded-full bg-gradient-to-r from-zinc-700 to-zinc-500"
+        ></div>
+        <div class="mr-6">{{ selectedTeam }}</div>
+      </div>
+    </ng-template>
+
+    <ng-template let-group pTemplate="group">
+      <span class="text-xs">{{ group.label }}</span>
+    </ng-template>
+
+    <ng-template let-team pTemplate="item">
+      <div class="flex items-center gap-6">
+        <div
+          class="size-5 rounded-full bg-gradient-to-r from-zinc-700 to-zinc-500"
+        ></div>
+        <div class="mr-6">{{ team.label }}</div>
+      </div>
+    </ng-template>
+  </p-dropdown>
+
+  <nav class="flex items-center mt-2 sm:mx-6 space-x-6">
+    <app-header-nav-item
+      [isActive]="actualRoute === '/'"
+      url="/"
+      title="Dashboard"
+    />
+    <app-header-nav-item
+      [isActive]="actualRoute === '/users'"
+      url="/users"
+      title="Clientes"
+    />
+    <app-header-nav-item
+      [isActive]="actualRoute === '/plans'"
+      url="/plans"
+      title="Planos"
+    />
+    <app-header-nav-item
+      [isActive]="actualRoute === '/associations'"
+      url="/associations"
+      title="Associações"
+    />
+  </nav>
+
+  <div></div>
+</div>

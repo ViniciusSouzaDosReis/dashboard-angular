@@ -1,0 +1,55 @@
+@import "primeicons/primeicons.css";
+
+@layer tailwind-base, primeng, tailwind-utilities;
+
+@layer primeng {
+  .p-datatable .p-datatable-thead > tr > th {
+    background: transparent !important;
+  }
+
+  .p-datatable .p-datatable-tbody > tr > td {
+    background: transparent !important;
+  }
+
+  .p-datatable .p-datatable-tbody > tr {
+    background: transparent !important;
+  }
+
+  .p-datatable.p-datatable-scrollable
+    > .p-datatable-wrapper
+    > .p-datatable-table
+    > .p-datatable-thead {
+    background: var(--bg-color) !important;
+  }
+
+  .p-inputtext {
+    padding: 0.35rem 0.65rem !important;
+    font-size: 0.875rem !important;
+  }
+
+  .p-icon-field-left > .p-inputtext {
+    padding-left: 2.25rem !important;
+  }
+}
+
+@layer tailwind-base {
+  @tailwind base;
+  :root {
+    --bg-color: #09090b;
+
+    --chart-1: hsl(221.2 83.2% 53.3%);
+    --chart-2: hsl(212 95% 68%);
+    --chart-3: hsl(216 92% 60%);
+    --chart-4: hsl(210 98% 78%);
+    --chart-5: hsl(212 97% 87%);
+  }
+}
+
+@layer tailwind-utilities {
+  @tailwind components;
+  @tailwind utilities;
+}
+
+body {
+  background-color: var(--bg-color);
+}

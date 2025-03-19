@@ -1,0 +1,19 @@
+<div
+  class="flex flex-col gap-6 items-center py-2 px-4 top-0 w-20 h-full bg-zinc-900"
+>
+  <div class="p-2 border rounded-md border-zinc-500 size-10">
+    <img src="../../assets/image/logo.svg" class="size-full" />
+  </div>
+
+  <ul class="flex flex-col gap-4">
+    @for (item of navItems; track item.title) {
+    <li>
+      <app-side-bar-item
+        [icon]="item.icon"
+        [route]="item.route"
+        [title]="item.title"
+      />
+    </li>
+    }
+  </ul>
+</div>

@@ -1,0 +1,60 @@
+<div>
+  <div>
+    <p class="text-zinc-400">Dashboard</p>
+    <h1 class="text-4xl font-semibold">Seja bem vindo Admin!</h1>
+  </div>
+
+  <div class="grid gap-4 mt-4 lg:grid-cols-3">
+    @if(!isLoadingDashboard && dashboard) {
+    <app-metric-card
+      title="Clientes Cadastrados"
+      [value]="dashboard.clients.total"
+      [differenceThanLastMonth]="dashboard.clients.difference"
+      [percentage]="dashboard.clients.percentage"
+      [isPositive]="dashboard.clients.trend === 'increase'"
+      icon="pi pi-users"
+    />
+    <app-metric-card
+      title="Planos Disponíveis"
+      [value]="dashboard.plans.total"
+      [differenceThanLastMonth]="dashboard.plans.difference"
+      [percentage]="dashboard.plans.percentage"
+      [isPositive]="dashboard.plans.trend === 'increase'"
+      icon="pi pi-briefcase"
+    />
+
+    <app-metric-card
+      title="Média de planos por cliente"
+      [value]="dashboard.averagePlansPerClient.total"
+      [differenceThanLastMonth]="dashboard.averagePlansPerClient.difference"
+      [percentage]="dashboard.averagePlansPerClient.percentage"
+      [isPositive]="dashboard.averagePlansPerClient.trend === 'increase'"
+      icon="pi pi-chart-bar"
+    />
+    } @else {
+    <p-skeleton width="100%" height="162px"></p-skeleton>
+    <p-skeleton width="100%" height="162px"></p-skeleton>
+    <p-skeleton width="100%" height="162px"></p-skeleton>
+    }
+  </div>
+
+  <div class="flex flex-col gap-4 mt-4 lg:grid-cols-6 lg:grid overflow-hidden">
+    @if (planOptions) {
+    <app-plans-chart
+      [isLoading]="isLoadingPlans"
+      [data]="planOptions"
+      class="flex flex-col justify-between w-full border rounded-xl py-4 px-6 lg:col-span-2"
+    />
+    } @else {
+    <p-skeleton class="lg:col-span-2" width="100%" height="500px"></p-skeleton>
+    } @if (users && planOptions) {
+    <app-users-chart
+      [isLoading]="isLoadingUsers"
+      [data]="users"
+      class="flex flex-col justify-between w-full border rounded-xl py-4 px-6 lg:col-span-4"
+    />
+    } @else {
+    <p-skeleton class="lg:col-span-4" width="100%" height="500px"></p-skeleton>
+    }
+  </div>
+</div>
