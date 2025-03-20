@@ -6,10 +6,12 @@ import {
   planMetricsReducer,
   plansReducer,
 } from '../../features/plans/state/plans.reducer';
+import { associationsReducer } from '../../features/associations/state/associations.reducer';
 
 export const appReducers: ActionReducerMap<IAppState> = {
   users: usersReducer,
   plans: plansReducer,
   dashboard: dashboardReducer,
   plansMetrics: planMetricsReducer,
+  associations: associationsReducer,
 };

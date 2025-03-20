@@ -139,8 +139,6 @@ export class UsersChartComponent implements OnInit {
 
   private updateChartData(): void {
     this.isLoadingChart = true;
-    console.log('this.data', this.data);
-
     setTimeout(() => {
       this.isLoadingChart = false;
 

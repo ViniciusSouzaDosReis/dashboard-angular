@@ -13,12 +13,4 @@ export class HeaderNavItemComponent {
   @Input({ required: true }) url!: string;
   @Input({ required: true }) title!: string;
   @Input({ required: true }) isActive!: boolean;
-
-  constructor(private activatedRoute: ActivatedRoute) {}
-
-  ngOnInit() {
-    this.activatedRoute.url.subscribe((url) => {
-      console.log(url);
-    });
-  }
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { delay, Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -24,5 +24,9 @@ export class ApiService {
 
   delete<T>(endpoint: string) {
     return this.http.delete<T>(`${this.baseUrl}/${endpoint}`);
+  }
+
+  handleMock<T>(method: T): Observable<T> {
+    return of(method).pipe(delay(500));
   }
 }

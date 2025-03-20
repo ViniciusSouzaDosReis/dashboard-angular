@@ -26,7 +26,6 @@ export class UsersEffects {
   createUser$ = createEffect(() =>
     this.actions$.pipe(
       ofType(UsersActions.createUser),
-      tap(({user}) => console.log(user)),
       mergeMap(({ user }) =>
         this.usersService.createUser(user).pipe(
           map((response) => UsersActions.createUserSuccess({ user: response })),

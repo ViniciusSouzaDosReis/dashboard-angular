@@ -145,17 +145,13 @@ export const plansReducer = createReducer(
     const updatedPlans = state.data
       ? state.data.map((plan) => {
           const findPlan = plans.find((p) => p.id === plan.id);
-          console.log(findPlan);
           const updatedPlan: Plan = {
             ...plan,
-            
           };
 
           return updatedPlan;
         })
       : [];
-
-    console.log(updatedPlans);
 
     return {
       ...state,

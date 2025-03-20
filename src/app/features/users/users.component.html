@@ -4,9 +4,24 @@
 
   <div>
     @if(!isLoading && users) {
-    <app-users-table [data]="users"/>
+    <app-users-table [data]="users" />
     } @else {
-    <p-skeleton height="100%" width="100%"></p-skeleton>
+    <div class="mt-2">
+      <div
+        class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between md:mt-8 mt-4"
+      >
+        <div class="w-full md:w-[300px]">
+          <p-skeleton width="100%" height="34px"></p-skeleton>
+        </div>
+        <div class="w-full md:w-[300px]">
+          <p-skeleton width="100%" height="34px"></p-skeleton>
+        </div>
+      </div>
+
+      <div class="h-[calc(100vh-240px)] mt-4">
+        <p-skeleton width="100%" height="100%"></p-skeleton>
+      </div>
+    </div>
     }
   </div>
 </div>

@@ -1,18 +1,26 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { DialogModule } from 'primeng/dialog';
-// import { ItemTest, PlanTest } from '../../associations.component';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { ScrollerModule } from 'primeng/scroller';
 import { ButtonModule } from 'primeng/button';
-import { Plan, PlanAssociation } from '../../../../core/models/plan.model';
+import { PlanAssociation } from '../../../../core/models/plan.model';
 import { User } from '../../../../core/models/user.model';
 import { SkeletonModule } from 'primeng/skeleton';
 import { Store } from '@ngrx/store';
 import { IAppState } from '../../../../core/state/app.state';
-import { plansSelector } from '../../../plans/state/plans.selector';
-import { PlanActions } from '../../../plans/state/plans.actions';
+import { AssociationsActions } from '../../state/associations.actions';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-create-association-modal',
@@ -25,10 +33,11 @@ import { PlanActions } from '../../../plans/state/plans.actions';
     ScrollerModule,
     ButtonModule,
     SkeletonModule,
+    NgClass,
   ],
   templateUrl: './create-association-modal.component.html',
 })
-export class CreateAssociationModalComponent implements OnInit {
+export class CreateAssociationModalComponent implements OnInit, OnChanges {
   @Input({ required: true }) displayModal = false;
   @Input({ required: true, alias: 'plans' }) data: PlanAssociation[] = [];
   @Input({ required: true }) user!: User;
@@ -43,13 +52,26 @@ export class CreateAssociationModalComponent implements OnInit {
     this.plans = this.data;
   }
 
-  onSubmit() {
-    const plans: PlanAssociation[] = this.selectedPlans.map((plan) => ({
-      ...plan,
-      userId: this.user.userId,
-    }));
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['data'] && changes['data'].currentValue) {
+      this.plans = this.data;
+    }
+    if (changes['user'] && changes['user'].currentValue) {
+      this.user = this.user;
+    }
+  }
 
-    this.store.dispatch(PlanActions.editPlans({ plans }));
+  onSubmit() {
+    const plans: PlanAssociation[] = this.selectedPlans.map((plan) => {
+      return {
+        ...plan,
+        items: [...plan.items, this.user],
+      };
+    });
+
+    this.store.dispatch(
+      AssociationsActions.updateAssociations({ associations: plans })
+    );
 
     this.onHide();
   }
@@ -57,6 +79,7 @@ export class CreateAssociationModalComponent implements OnInit {
   onHide() {
     this.displayModal = false;
     this.displayModalChange.emit(this.displayModal);
+    this.selectedPlans = [];
   }
 
   handleSearchUser(event: Event) {
@@ -67,9 +90,7 @@ export class CreateAssociationModalComponent implements OnInit {
   }
 
   selectPlan(plan: PlanAssociation) {
-    if (this.isAssociating(plan)) {
-      return;
-    }
+    if (this.isAssociating(plan)) return;
 
     if (this.isSelected(plan)) {
       this.selectedPlans = this.selectedPlans.filter(
@@ -85,8 +106,6 @@ export class CreateAssociationModalComponent implements OnInit {
   }
 
   isAssociating(plan: PlanAssociation): boolean {
-    return this.user.associatedPlans.some(
-      (item) => item.planId.toString() === plan.id
-    );
+    return plan.items.some((item) => item.userId === this.user.userId);
   }
 }

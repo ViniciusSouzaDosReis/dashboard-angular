@@ -3,6 +3,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { PlansService } from '../services/plans.service';
 import { PlanActions, PlanMetricActions } from './plans.actions';
 import { catchError, map, mergeMap, of } from 'rxjs';
+import { AssociationsActions } from '../../associations/state/associations.actions';
 
 @Injectable()
 export class PlansEffects {

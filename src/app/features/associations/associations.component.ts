@@ -19,6 +19,7 @@ import { PlanActions } from '../plans/state/plans.actions';
 import { User } from '../../core/models/user.model';
 import { usersSelector } from '../users/state/users.selectors';
 import { UsersActions } from '../users/state/users.actions';
+import { AssociationsActions } from './state/associations.actions';
 
 type AuxItems = {
   planId: string;
@@ -47,6 +48,7 @@ type AuxItems = {
 export class AssociationsComponent {
   private plansSubscription!: Subscription;
   private usersSubscription!: Subscription;
+  private associationsSubscription!: Subscription;
 
   usersData: User[] | null = null;
   users: User[] | null = null;
@@ -94,15 +96,18 @@ export class AssociationsComponent {
 
         if (data !== null) {
           this.plansData = data;
-          this.plans = data.map(({ id, nome }) => ({
-            name: nome,
-            id,
-            items: [],
-          }));
         }
 
         if (!data && status !== 'loading') {
           this.store.dispatch(PlanActions.loadPlans());
+        }
+      });
+
+    this.associationsSubscription = this.store
+      .select((state) => state.associations)
+      .subscribe(({ data }) => {
+        if (data) {
+          this.plans = data;
         }
       });
   }
@@ -188,10 +193,22 @@ export class AssociationsComponent {
         return;
       }
 
-      if (this.plansData && this.plans) {
+      if (this.plansData && this.plans && this.draggedItem) {
         const planIndex = this.plans.findIndex((p) => p.id === plan.id);
-        this.plans[planIndex].items.push(this.draggedItem);
+        const newPlans = this.plans.map((p) => {
+          if (p.id === plan.id) {
+            return {
+              ...p,
+              items: [...p.items, this.draggedItem as unknown as User],
+            };
+          }
+          return p;
+        });
+        this.store.dispatch(
+          AssociationsActions.updateAssociations({ associations: newPlans })
+        );
 
+        // only for search logic
         if (this.auxItems.length > 0) {
           const auxItemIndex = this.auxItems.findIndex(
             (item) => item.userId === this.draggedItem?.userId
@@ -224,8 +241,21 @@ export class AssociationsComponent {
       const itemIndex = this.plans[planIndex].items.findIndex(
         (i) => i.userId === item.userId
       );
+      const newAssociations = this.plans.map((p) => {
+        if (p.id === plan.id) {
+          return {
+            ...p,
+            items: p.items.filter((i) => i.userId !== item.userId),
+          };
+        }
+        return p;
+      });
 
-      this.plans[planIndex].items.splice(itemIndex, 1);
+      this.store.dispatch(
+        AssociationsActions.updateAssociations({
+          associations: newAssociations,
+        })
+      );
     }
   }
 
@@ -235,7 +265,14 @@ export class AssociationsComponent {
   }
 
   ngOnDestroy(): void {
-    this.plansSubscription.unsubscribe();
-    this.usersSubscription.unsubscribe();
+    if (this.plansSubscription) {
+      this.plansSubscription.unsubscribe();
+    }
+    if (this.associationsSubscription) {
+      this.associationsSubscription.unsubscribe();
+    }
+    if (this.usersSubscription) {
+      this.usersSubscription.unsubscribe();
+    }
   }
 }

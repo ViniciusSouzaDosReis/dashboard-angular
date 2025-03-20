@@ -16,11 +16,11 @@
       </p>
     </div>
   </ng-template>
-  <div class="border rounded p-3 space-y-1 mb-4">
+  <div class="border p-3 rounded mb-4 space-y-1">
     <span class="font-semibold">Cliente Selecionado</span>
     <div class="flex gap-4 items-center">
       <div
-        class="size-8 rounded-full bg-gradient-to-r from-zinc-700 to-zinc-500"
+        class="bg-gradient-to-r rounded-full from-zinc-700 size-8 to-zinc-500"
       ></div>
       <div class="">
         <p class="font-medium">{{ user.name }}</p>
@@ -62,8 +62,12 @@
       >
         <ng-template pTemplate="item" let-plan let-options="options">
           <div
-            class="flex items-start justify-between rounded-md p-2 mb-2 cursor-pointer hover:bg-zinc-800/50"
-            [class]="isSelected(plan) ? 'bg-zinc-700 hover:bg-zinc-600/50' : ''"
+            class="flex justify-between p-2 rounded-md cursor-pointer hover:bg-zinc-800/50 items-start mb-2"
+            [ngClass]="{
+              'cursor-not-allowed': isAssociating(plan),
+              'bg-zinc-700': isSelected(plan),
+              'hover:bg-zinc-600/50': isSelected(plan)
+            }"
             (click)="selectPlan(plan)"
           >
             <div>
@@ -72,7 +76,7 @@
             </div>
 
             @if(isAssociating(plan)){
-            <div class="text-xs px-3 border rounded-full">Associado</div>
+            <div class="border rounded-full text-xs px-3">Associado</div>
             }
           </div>
         </ng-template>

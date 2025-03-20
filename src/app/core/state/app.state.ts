@@ -1,3 +1,4 @@
+import { IAssociationState } from '../../features/associations/state/associations.reducer';
 import { IDashboardState } from '../../features/dashboard/state/dashboard.reducer';
 import {
   IPlanMetricsState,
@@ -11,6 +12,7 @@ export interface IAppState {
   dashboard: IDashboardState;
   plans: IPlansState;
   plansMetrics: IPlanMetricsState;
+  associations: IAssociationState;
 }
 
 export const initialState: IAppState = {
@@ -36,5 +38,9 @@ export const initialState: IAppState = {
     data: null,
     status: StateStatus.loading,
     error: null,
+  },
+
+  associations: {
+    data: null,
   },
 };

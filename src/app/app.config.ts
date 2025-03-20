@@ -15,6 +15,7 @@ import { UsersEffects } from './features/users/state/users.effects';
 import { DashboardEffects } from './features/dashboard/state/dashboard.effects';
 import { PlansService } from './features/plans/services/plans.service';
 import { PlansEffects } from './features/plans/state/plans.effects';
+import { AssociationsEffects } from './features/associations/state/associations.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,7 +24,12 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimations(),
     provideStore(appReducers),
-    provideEffects([UsersEffects, DashboardEffects, PlansEffects]),
+    provideEffects([
+      UsersEffects,
+      DashboardEffects,
+      PlansEffects,
+      AssociationsEffects,
+    ]),
     ApiService,
     UsersService,
     DashboardService,
