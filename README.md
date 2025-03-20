@@ -12,8 +12,8 @@ Pré-requisitos
 **1. Copie o projeto**
 
 ```
-git clone https://github.com/ViniciusSouzaDosReis/mobit-test
-cd mobit-test
+git clone https://github.com/ViniciusSouzaDosReis/dashboard
+cd dashboard
 ```
 
 **Instale as dependências:**

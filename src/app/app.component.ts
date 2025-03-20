@@ -11,5 +11,5 @@ import { ToastModule } from 'primeng/toast';
   templateUrl: './app.component.html',
 })
 export class AppComponent {
-  title = 'mobit-test';
+  title = 'dashboard';
 }

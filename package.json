@@ -1,5 +1,5 @@
 {
-  "name": "mobit-test",
+  "name": "dashboard",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "server": "node server/server.js",
-    "serve:ssr:mobit-test": "node dist/mobit-test/server/server.mjs"
+    "serve:ssr:dashboard": "node dist/dashboard/server/server.mjs"
   },
   "private": true,
   "dependencies": {
@@ -24,8 +24,8 @@
     "@ngrx/store": "^17.2.0",
     "chart.js": "^4.4.8",
     "cors": "^2.8.5",
+    "dashboard": "file:",
     "json-server": "^0.17.3",
-    "mobit-test": "file:",
     "primeicons": "^7.0.0",
     "primeng": "^17.18.15",
     "rxjs": "~7.8.0",
